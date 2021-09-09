@@ -1,52 +1,39 @@
 const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-require('dotenv/config');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: { app: path.join(__dirname, 'src', 'index.tsx') },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/dist/',
-    clean: true,
+    publicPath: '/',
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      '@': path.resolve(__dirname, 'src/'),
+      '@': path.resolve(__dirname, 'src'),
     },
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.(ts|tsx)$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
+        test: /\.(scss|css)$/,
         use: ['style-loader', 'css-loader'],
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|jp(e?)g)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 8000,
-          name: 'images/[hash]-[name].[ext]',
-        },
-      },
-      {
-        test: /\.svg$/,
-        loader: 'file-loader',
+        test: /\.(png|jpe?g|gif|woff|woff2|ttf|ico)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'images/[hash]-[name].[ext]',
+            },
+          },
+        ],
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
-  ],
 };
