@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 import rootRouter from './routers';
 
@@ -18,7 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', rootRouter);
-
 
 app.listen(PORT, async () => {
   console.log(`server is listening at ${PORT}`);
